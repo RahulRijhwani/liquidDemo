@@ -20,6 +20,20 @@ import {
 } from 'react-native';
 import ImageCropPicker from 'react-native-image-crop-picker';
 
+// String constant
+const Constants={
+  choose_camera:'Choose From Camera',
+  choose_gallery:'Choose From Gallery',
+  upload_image:'Upload Photo',
+  image_success_message:'Image Uploaded Successfully',
+  something_went_wrong:'Something went wrong try again after sometime',
+}
+
+// APIs constant
+const Constants_APIs={
+  UPLOAD_API:'https://jsonplaceholder.typicode.com/posts/',
+}
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [imageData, setImageData] = useState(null);
@@ -59,21 +73,21 @@ const App = () => {
       filename: 'imageName.png',
       type: 'image/png',
     });
-    
+
 
     //API call
-    fetch('https://jsonplaceholder.typicode.com/posts/', {
+    fetch(Constants_APIs.UPLOAD_API, {
       method: 'POST',
       body: formData,
     })
       .then(response => response.json())
       .then(response => {
-        Alert.alert('Image Uploaded Successfully');
+        Alert.alert(Constants.image_success_message);
         return response;
       })
       .catch(exc => {
         console.log('Response exc:', exc);
-        Alert.alert('Something went wrong try again after sometime');
+        Alert.alert(Constants.something_went_wrong);
         return null;
       });
   };
@@ -96,13 +110,13 @@ const App = () => {
           onPress={() => {
             selectPhoto(1);
           }}
-          text={'Choose From Camera'}
+          text={Constants.choose_camera}
         />
         <RenderButtonView
           onPress={() => {
             selectPhoto(0);
           }}
-          text={'Choose From Gallery'}
+          text={Constants.choose_gallery}
         />
         {imageData?.path && (
           <Image
@@ -115,7 +129,7 @@ const App = () => {
             onPress={() => {
               uploadImage();
             }}
-            text={'Upload Photo'}
+            text={Constants.upload_image}
           />
         )}
       </View>
